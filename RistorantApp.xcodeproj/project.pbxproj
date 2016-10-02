@@ -9,11 +9,12 @@
 /* Begin PBXBuildFile section */
 		5DFEF4581D9CA4B6009778BB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DFEF4571D9CA4B6009778BB /* main.m */; };
 		5DFEF45B1D9CA4B6009778BB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DFEF45A1D9CA4B6009778BB /* AppDelegate.m */; };
-		5DFEF45E1D9CA4B6009778BB /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DFEF45D1D9CA4B6009778BB /* ViewController.m */; };
 		5DFEF4611D9CA4B6009778BB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5DFEF45F1D9CA4B6009778BB /* Main.storyboard */; };
 		5DFEF4641D9CA4B6009778BB /* RistorantApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5DFEF4621D9CA4B6009778BB /* RistorantApp.xcdatamodeld */; };
 		5DFEF4661D9CA4B6009778BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5DFEF4651D9CA4B6009778BB /* Assets.xcassets */; };
 		5DFEF4691D9CA4B6009778BB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5DFEF4671D9CA4B6009778BB /* LaunchScreen.storyboard */; };
+		5DFEF4761DA1643E009778BB /* Restaurant.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DFEF4751DA1643E009778BB /* Restaurant.m */; };
+		5DFEF4791DA16834009778BB /* CoreDataStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DFEF4781DA16834009778BB /* CoreDataStorage.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,13 +22,15 @@
 		5DFEF4571D9CA4B6009778BB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		5DFEF4591D9CA4B6009778BB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		5DFEF45A1D9CA4B6009778BB /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		5DFEF45C1D9CA4B6009778BB /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		5DFEF45D1D9CA4B6009778BB /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		5DFEF4601D9CA4B6009778BB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		5DFEF4631D9CA4B6009778BB /* RistorantApp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RistorantApp.xcdatamodel; sourceTree = "<group>"; };
 		5DFEF4651D9CA4B6009778BB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5DFEF4681D9CA4B6009778BB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5DFEF46A1D9CA4B6009778BB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5DFEF4741DA1643E009778BB /* Restaurant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Restaurant.h; sourceTree = "<group>"; };
+		5DFEF4751DA1643E009778BB /* Restaurant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Restaurant.m; sourceTree = "<group>"; };
+		5DFEF4771DA16834009778BB /* CoreDataStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataStorage.h; sourceTree = "<group>"; };
+		5DFEF4781DA16834009778BB /* CoreDataStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataStorage.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,6 +47,7 @@
 		5DFEF44A1D9CA4B5009778BB = {
 			isa = PBXGroup;
 			children = (
+				5DFEF47C1DA168B3009778BB /* Frameworks */,
 				5DFEF4551D9CA4B5009778BB /* RistorantApp */,
 				5DFEF4541D9CA4B5009778BB /* Products */,
 			);
@@ -60,13 +64,12 @@
 		5DFEF4551D9CA4B5009778BB /* RistorantApp */ = {
 			isa = PBXGroup;
 			children = (
+				5DFEF4731DA16385009778BB /* models */,
+				5DFEF4721DA16351009778BB /* controllers */,
+				5DFEF4711DA1633F009778BB /* views */,
 				5DFEF4591D9CA4B6009778BB /* AppDelegate.h */,
 				5DFEF45A1D9CA4B6009778BB /* AppDelegate.m */,
-				5DFEF45C1D9CA4B6009778BB /* ViewController.h */,
-				5DFEF45D1D9CA4B6009778BB /* ViewController.m */,
-				5DFEF45F1D9CA4B6009778BB /* Main.storyboard */,
 				5DFEF4651D9CA4B6009778BB /* Assets.xcassets */,
-				5DFEF4671D9CA4B6009778BB /* LaunchScreen.storyboard */,
 				5DFEF46A1D9CA4B6009778BB /* Info.plist */,
 				5DFEF4621D9CA4B6009778BB /* RistorantApp.xcdatamodeld */,
 				5DFEF4561D9CA4B5009778BB /* Supporting Files */,
@@ -80,6 +83,40 @@
 				5DFEF4571D9CA4B6009778BB /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		5DFEF4711DA1633F009778BB /* views */ = {
+			isa = PBXGroup;
+			children = (
+				5DFEF45F1D9CA4B6009778BB /* Main.storyboard */,
+				5DFEF4671D9CA4B6009778BB /* LaunchScreen.storyboard */,
+			);
+			name = views;
+			sourceTree = "<group>";
+		};
+		5DFEF4721DA16351009778BB /* controllers */ = {
+			isa = PBXGroup;
+			children = (
+				5DFEF4771DA16834009778BB /* CoreDataStorage.h */,
+				5DFEF4781DA16834009778BB /* CoreDataStorage.m */,
+			);
+			name = controllers;
+			sourceTree = "<group>";
+		};
+		5DFEF4731DA16385009778BB /* models */ = {
+			isa = PBXGroup;
+			children = (
+				5DFEF4741DA1643E009778BB /* Restaurant.h */,
+				5DFEF4751DA1643E009778BB /* Restaurant.m */,
+			);
+			name = models;
+			sourceTree = "<group>";
+		};
+		5DFEF47C1DA168B3009778BB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -152,8 +189,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5DFEF4761DA1643E009778BB /* Restaurant.m in Sources */,
 				5DFEF4641D9CA4B6009778BB /* RistorantApp.xcdatamodeld in Sources */,
-				5DFEF45E1D9CA4B6009778BB /* ViewController.m in Sources */,
+				5DFEF4791DA16834009778BB /* CoreDataStorage.m in Sources */,
 				5DFEF45B1D9CA4B6009778BB /* AppDelegate.m in Sources */,
 				5DFEF4581D9CA4B6009778BB /* main.m in Sources */,
 			);
