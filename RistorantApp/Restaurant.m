@@ -17,5 +17,7 @@
 @dynamic open;
 @dynamic close;
 @dynamic price;
+@dynamic rating;
+@dynamic category;
 
 @end

@@ -17,5 +17,7 @@
 @property (nonatomic, retain) NSDate *open;
 @property (nonatomic, retain) NSDate *close;
 @property (nonatomic, retain) NSDecimalNumber *price;
+@property (nonatomic, retain) NSNumber *rating;
+@property (nonatomic, retain) NSString *category;
 
 @end
