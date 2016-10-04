@@ -8,6 +8,7 @@
 
 #import "RestaurantTableViewCell.h"
 #import "Restaurant.h"
+#import "UIImage+Save.h"
 
 @implementation RestaurantTableViewCell
 
@@ -28,7 +29,9 @@
     self.name.text = restaurant.name;
     self.price.text = [NSString stringWithFormat:@"$%@", restaurant.price];
     self.category.text = restaurant.category;
+    self.imageRestaurant.image = [UIImage loadImageWithName:restaurant.image];
     self.rating.text = restaurant.rating.stringValue;
+    
 }
 
 @end

@@ -10,6 +10,7 @@
 #import "RestaurantTableViewCell.h"
 #import "Restaurant.h"
 #import "RestaurantDetailViewController.h"
+#import "CoreDataStorage.h"
 
 @interface RestaurantTableViewController ()
 
@@ -26,6 +27,14 @@
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
+    
+    managedObjectContext = [[CoreDataStorage sharedInstance] managedObjectContext];
+    NSError *error;
+    if (![[self fetchedResultsController] performFetch:&error]) {
+        // Update to handle the error appropriately.
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        exit(-1);  // Fail
+    }
     
     self.title = @"Restaurants";
     
@@ -69,9 +78,10 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    RestaurantTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"restaurantCell" forIndexPath:indexPath];
+    static NSString *CellIdentifier = @"Cell1";
+    RestaurantTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     if (!cell) {
-        cell = [[RestaurantTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"restaurantCell"];
+        cell = [[RestaurantTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
     // Configure the cell...
     
@@ -83,50 +93,41 @@
 }
 
 
-/*
+
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     // Return NO if you do not want the specified item to be editable.
     return YES;
 }
-*/
 
-/*
+
+
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        //[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [managedObjectContext deleteObject:[_fetchedResultsController objectAtIndexPath:indexPath]];
+        [managedObjectContext save:nil];
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }   
 }
-*/
 
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
 
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
+    
+     RestaurantDetailViewController *detailRestaurant = [self.storyboard instantiateViewControllerWithIdentifier:@"restaurantdetailview"];
+    
+    detailRestaurant.detailRestaurant = [_fetchedResultsController objectAtIndexPath:indexPath];
      // ...
      // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
+     [self.navigationController pushViewController:detailRestaurant animated:YES];
+    
 }
 
 /*
@@ -160,7 +161,8 @@
     
     NSFetchedResultsController *theFetchedResultsController =
     [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                        managedObjectContext:managedObjectContext sectionNameKeyPath:nil
+                                        managedObjectContext:managedObjectContext
+                                          sectionNameKeyPath:nil
                                                    cacheName:@"Root"];
     self.fetchedResultsController = theFetchedResultsController;
     _fetchedResultsController.delegate = self;

@@ -19,5 +19,6 @@
 @property (nonatomic, retain) NSDecimalNumber *price;
 @property (nonatomic, retain) NSNumber *rating;
 @property (nonatomic, retain) NSString *category;
+@property (nonatomic, retain) NSString *image;
 
 @end

@@ -19,5 +19,6 @@
 @dynamic price;
 @dynamic rating;
 @dynamic category;
+@dynamic image;
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+@class Restaurant;
 
 @interface RestaurantDetailViewController : UIViewController <UITextViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
     NSArray *pickerArray;
@@ -22,6 +23,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *priceRestaurant;
 @property (weak, nonatomic) IBOutlet UISlider *ratingRestaurant;
 @property (weak, nonatomic) IBOutlet UILabel *ratingLabel;
+@property (strong, nonatomic) Restaurant *detailRestaurant;
+
 
 - (IBAction)sliderValueChanged:(id)sender;
 

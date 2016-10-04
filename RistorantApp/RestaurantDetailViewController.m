@@ -9,6 +9,9 @@
 #import "RestaurantDetailViewController.h"
 #import "Constants.h"
 #import "LocationViewController.h"
+#import "CoreDataStorage.h"
+#import "Restaurant.h"
+#import "UIImage+Save.h"
 
 @interface RestaurantDetailViewController ()
 
@@ -16,25 +19,33 @@
 
 @implementation RestaurantDetailViewController
 
+@synthesize detailRestaurant;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
     //add buttons for done and cancel
-    UIBarButtonItem *btnDone = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done)];
-    UIBarButtonItem *btnCancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelView)];
+    UIBarButtonItem *btnDone = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                             target:self
+                                                                             action:@selector(done)];
+    UIBarButtonItem *btnCancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                               target:self
+                                                                               action:@selector(cancelView)];
     [self.navigationItem setRightBarButtonItem:btnDone];
     [self.navigationItem setLeftBarButtonItem:btnCancel];
     
     //set the input view for datepicker
     UIDatePicker *datePickerOpen = [[UIDatePicker alloc] init];
     datePickerOpen.datePickerMode = UIDatePickerModeTime;
-    [datePickerOpen addTarget:self action:@selector(updateTextFieldOpen:)
-         forControlEvents:UIControlEventValueChanged];
+    [datePickerOpen addTarget:self
+                       action:@selector(updateTextFieldOpen:)
+             forControlEvents:UIControlEventValueChanged];
     UIDatePicker *datePickerClose = [[UIDatePicker alloc] init];
     datePickerClose.datePickerMode = UIDatePickerModeTime;
-    [datePickerClose addTarget:self action:@selector(updateTextFieldClose:)
-         forControlEvents:UIControlEventValueChanged];
+    [datePickerClose addTarget:self
+                        action:@selector(updateTextFieldClose:)
+              forControlEvents:UIControlEventValueChanged];
     self.openRestaurant.inputView = datePickerOpen;
     self.closeRestaurant.inputView = datePickerClose;
     
@@ -45,6 +56,10 @@
     myPickerView.delegate = self;
     myPickerView.showsSelectionIndicator = YES;
     _typeRestaurant.inputView = myPickerView;
+    
+    if (detailRestaurant) {
+        [self fillInfo];
+    }
 }
 
 
@@ -52,13 +67,13 @@
 -(void)updateTextFieldOpen:(UIDatePicker *)sender
 {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"HH:mm:ss"];
+    [dateFormatter setDateFormat:@"HH:mm a"];
     _openRestaurant.text = [dateFormatter stringFromDate:sender.date];
 }
 -(void)updateTextFieldClose:(UIDatePicker *)sender
 {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"HH:mm:ss"];
+    [dateFormatter setDateFormat:@"HH:mm a"];
     _closeRestaurant.text = [dateFormatter stringFromDate:sender.date];
 }
 
@@ -70,13 +85,126 @@
 
 //save or update new record
 - (void)done {
+    if ([self validateFields]) {
+        if (!detailRestaurant) {
+            
+            NSManagedObjectContext *managedObject = [[CoreDataStorage sharedInstance] managedObjectContext];
+            NSEntityDescription *restaurantEntity = [NSEntityDescription entityForName:@"Restaurant"
+                                                                inManagedObjectContext:managedObject];
+            Restaurant *restaurant = [[Restaurant alloc] initWithEntity:restaurantEntity
+                                         insertIntoManagedObjectContext:managedObject];
+            
+            //set all the properties
+            [restaurant setName:self.nameRestaurant.text];
+            [restaurant setRating:[NSNumber numberWithInt:[self.ratingLabel.text intValue]]];
+            
+            NSString *location = [_locationButton titleForState:UIControlStateNormal];
+            NSRange range1 = [location rangeOfString:@"<"];
+            NSRange range2 = [location rangeOfString:@">"];
+            NSRange rSub = NSMakeRange(range1.location + range1.length, range2.location - range1.location - range1.length);
+            NSString *sub = [location substringWithRange:rSub];
+            
+            [restaurant setLocation:sub];
+            [restaurant setType:self.typeRestaurant.text];
+            
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            dateFormatter.dateFormat = @"HH:mm a";
+            
+            [restaurant setOpen:[dateFormatter dateFromString:self.openRestaurant.text]];
+            [restaurant setClose:[dateFormatter dateFromString:self.closeRestaurant.text]];
+            [restaurant setPrice:[NSDecimalNumber decimalNumberWithString:self.priceRestaurant.text]];
+            [restaurant setCategory:self.categoryRestaurant.text];
+            [restaurant setImage:restaurant.name];
+            
+            [UIImage saveImage:self.imageRestaurant.image withName:restaurant.name];
+            
+            // save
+            if ([managedObject hasChanges]) {
+                NSLog(@"[*] Will save %lu restaurants", (unsigned long)[[managedObject insertedObjects] count]);
+                [managedObject save:nil];
+            }
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+        else {
+            detailRestaurant.name = self.nameRestaurant.text;
+            
+            NSString *location = [_locationButton titleForState:UIControlStateNormal];
+            NSRange range1 = [location rangeOfString:@"<"];
+            NSRange range2 = [location rangeOfString:@">"];
+            NSRange rSub = NSMakeRange(range1.location + range1.length, range2.location - range1.location - range1.length);
+            NSString *sub = [location substringWithRange:rSub];
+            
+            detailRestaurant.location = sub;
+            detailRestaurant.type = self.typeRestaurant.text;
+            detailRestaurant.category = self.categoryRestaurant.text;
+            
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            dateFormatter.dateFormat = @"HH:mm a";
+            
+            detailRestaurant.open = [dateFormatter dateFromString:self.openRestaurant.text];
+            detailRestaurant.close = [dateFormatter dateFromString:self.closeRestaurant.text];
+            detailRestaurant.price = [NSDecimalNumber decimalNumberWithString:self.priceRestaurant.text];
+            detailRestaurant.rating = [NSNumber numberWithInt:[self.ratingLabel.text intValue]];
+            
+            detailRestaurant.image = detailRestaurant.name;
+            
+            [UIImage saveImage:self.imageRestaurant.image withName:detailRestaurant.name];
+            
+            NSManagedObjectContext *managedObject = [[CoreDataStorage sharedInstance] managedObjectContext];
+            if ([managedObject hasChanges]) {
+                NSLog(@"[*] Will save %lu restaurants", (unsigned long)[[managedObject insertedObjects] count]);
+                [managedObject save:nil];
+            }
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    }
+    else {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Error"
+                                                                       message:@"You must fill all the fields"
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okButton = [UIAlertAction actionWithTitle:@"Ok"
+                                                           style:UIAlertActionStyleDefault
+                                                         handler:nil];
+        [alert addAction:okButton];
+        
+        [self presentViewController:alert
+                           animated:YES
+                         completion:nil];
+        
+    }
     
-    [self dismissViewControllerAnimated:YES completion:nil];
+    
+    
+    
+}
+
+- (void)fillInfo {
+    self.nameRestaurant.text = detailRestaurant.name;
+    self.categoryRestaurant.text = detailRestaurant.category;
+    self.typeRestaurant.text = detailRestaurant.type;
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = @"HH:mm a";
+    
+    self.openRestaurant.text = [dateFormatter stringFromDate:detailRestaurant.open];
+    self.closeRestaurant.text = [dateFormatter stringFromDate:detailRestaurant.close];
+    
+    self.priceRestaurant.text = [NSString stringWithFormat:@"%.02f", [detailRestaurant.price doubleValue]];
+    self.ratingLabel.text = [detailRestaurant.rating stringValue];
+    self.ratingRestaurant.value = [detailRestaurant.rating floatValue];
+    [self.locationButton setTitle:[NSString stringWithFormat:@"Location: <%@>", detailRestaurant.location] forState:UIControlStateNormal];
+    self.imageRestaurant.image = [UIImage loadImageWithName:detailRestaurant.image];
+    
 }
 
 //return to main view
 - (void)cancelView {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if (detailRestaurant) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -136,31 +264,23 @@
     } else if (textField.returnKeyType==UIReturnKeyDone) {
         [textField resignFirstResponder];
         
-    } else if (textField.returnKeyType == UIReturnKeyGo) {
-        /*if (![self validateFields]) {
-            UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"Info" message:@"You must fill Email, Phone, First Name and Last Name fields" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-            [alert1 show];
-        } else {
-            [self performSegueWithIdentifier:@"infoSegue" sender:self];
-        }
-        */
     }
     return YES;
 }
 
 - (BOOL)validateFields {
     BOOL returnValue = YES;
-    /*if (_txtLastName.text.length == 0 || _txtFirstName.text.length == 0 || _txtEmail.text.length == 0 || _txtPhone.text.length == 0) {
+    if (_nameRestaurant.text.length == 0 || _openRestaurant.text.length == 0 || _closeRestaurant.text.length == 0 || _typeRestaurant.text.length == 0 || _priceRestaurant.text.length == 0 || [[_locationButton titleForState:UIControlStateNormal] isEqualToString:@"Location"]) {
         returnValue = NO;
-    }*/
+    }
     return returnValue;
 }
 
 #pragma mark - Picker View Data source
--(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
+-(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
     return 1;
 }
--(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
+-(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
     return [pickerArray count];
 }
 
@@ -187,8 +307,7 @@
     [self.navigationController presentViewController:imagePickController animated:YES completion:nil];
 }
 
--(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
-{
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     UIImage *image=[info objectForKey:UIImagePickerControllerEditedImage];
     _imageRestaurant.image=image;
     [self dismissViewControllerAnimated:YES completion:nil];

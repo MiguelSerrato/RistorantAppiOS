@@ -12,6 +12,7 @@
 		5D71E27E1DA2B8760052BDFF /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D71E27D1DA2B8760052BDFF /* MapKit.framework */; };
 		5D71E2821DA2CB310052BDFF /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D71E2811DA2CB310052BDFF /* Constants.m */; };
 		5D71E2841DA2E9390052BDFF /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D71E2831DA2E9390052BDFF /* placeholder.png */; };
+		5D71E2881DA341230052BDFF /* UIImage+Save.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D71E2871DA341230052BDFF /* UIImage+Save.m */; };
 		5DFEF4581D9CA4B6009778BB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DFEF4571D9CA4B6009778BB /* main.m */; };
 		5DFEF45B1D9CA4B6009778BB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DFEF45A1D9CA4B6009778BB /* AppDelegate.m */; };
 		5DFEF4611D9CA4B6009778BB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5DFEF45F1D9CA4B6009778BB /* Main.storyboard */; };
@@ -35,6 +36,8 @@
 		5D71E2801DA2CB310052BDFF /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		5D71E2811DA2CB310052BDFF /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		5D71E2831DA2E9390052BDFF /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = "<group>"; };
+		5D71E2861DA341230052BDFF /* UIImage+Save.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Save.h"; sourceTree = "<group>"; };
+		5D71E2871DA341230052BDFF /* UIImage+Save.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Save.m"; sourceTree = "<group>"; };
 		5DFEF4531D9CA4B5009778BB /* RistorantApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RistorantApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DFEF4571D9CA4B6009778BB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		5DFEF4591D9CA4B6009778BB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -80,6 +83,15 @@
 			name = includes;
 			sourceTree = "<group>";
 		};
+		5D71E2851DA340700052BDFF /* categories */ = {
+			isa = PBXGroup;
+			children = (
+				5D71E2861DA341230052BDFF /* UIImage+Save.h */,
+				5D71E2871DA341230052BDFF /* UIImage+Save.m */,
+			);
+			name = categories;
+			sourceTree = "<group>";
+		};
 		5DFEF44A1D9CA4B5009778BB = {
 			isa = PBXGroup;
 			children = (
@@ -100,6 +112,8 @@
 		5DFEF4551D9CA4B5009778BB /* RistorantApp */ = {
 			isa = PBXGroup;
 			children = (
+				5D71E2851DA340700052BDFF /* categories */,
+				5DFEF4721DA16351009778BB /* controllers */,
 				5D71E27F1DA2CB140052BDFF /* includes */,
 				5DFEF4731DA16385009778BB /* models */,
 				5DFEF4711DA1633F009778BB /* views */,
@@ -155,7 +169,6 @@
 			children = (
 				5DFEF4741DA1643E009778BB /* Restaurant.h */,
 				5DFEF4751DA1643E009778BB /* Restaurant.m */,
-				5DFEF4721DA16351009778BB /* controllers */,
 			);
 			name = models;
 			sourceTree = "<group>";
@@ -249,6 +262,7 @@
 				5DFEF4881DA236DA009778BB /* RestaurantTableViewController.m in Sources */,
 				5D71E2821DA2CB310052BDFF /* Constants.m in Sources */,
 				5DFEF4931DA263F6009778BB /* RestaurantDetailViewController.m in Sources */,
+				5D71E2881DA341230052BDFF /* UIImage+Save.m in Sources */,
 				5DFEF4791DA16834009778BB /* CoreDataStorage.m in Sources */,
 				5DFEF45B1D9CA4B6009778BB /* AppDelegate.m in Sources */,
 				5DFEF4581D9CA4B6009778BB /* main.m in Sources */,
