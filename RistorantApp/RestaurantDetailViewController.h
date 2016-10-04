@@ -24,6 +24,7 @@
 @property (weak, nonatomic) IBOutlet UISlider *ratingRestaurant;
 @property (weak, nonatomic) IBOutlet UILabel *ratingLabel;
 @property (strong, nonatomic) Restaurant *detailRestaurant;
+@property (weak, nonatomic) IBOutlet UILabel *locationRestaurant;
 
 
 - (IBAction)sliderValueChanged:(id)sender;

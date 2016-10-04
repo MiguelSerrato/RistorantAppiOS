@@ -20,5 +20,6 @@
 @dynamic rating;
 @dynamic category;
 @dynamic image;
+@dynamic locationString;
 
 @end

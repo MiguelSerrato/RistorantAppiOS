@@ -59,6 +59,10 @@
     
     if (detailRestaurant) {
         [self fillInfo];
+        [self setTitle:@"Edit Restaurant"];
+    }
+    else {
+        [self setTitle:@"Add Restaurant"];
     }
 }
 
@@ -98,13 +102,20 @@
             [restaurant setName:self.nameRestaurant.text];
             [restaurant setRating:[NSNumber numberWithInt:[self.ratingLabel.text intValue]]];
             
-            NSString *location = [_locationButton titleForState:UIControlStateNormal];
+            NSString *location = [_locationRestaurant text];
             NSRange range1 = [location rangeOfString:@"<"];
             NSRange range2 = [location rangeOfString:@">"];
             NSRange rSub = NSMakeRange(range1.location + range1.length, range2.location - range1.location - range1.length);
             NSString *sub = [location substringWithRange:rSub];
-            
             [restaurant setLocation:sub];
+            
+            NSString *locationString = [_locationButton titleForState:UIControlStateNormal];
+            range1 = [locationString rangeOfString:@"<"];
+            range2 = [locationString rangeOfString:@">"];
+            rSub = NSMakeRange(range1.location + range1.length, range2.location - range1.location - range1.length);
+            sub = [locationString substringWithRange:rSub];
+            [restaurant setLocationString:sub];
+            
             [restaurant setType:self.typeRestaurant.text];
             
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -134,7 +145,16 @@
             NSRange rSub = NSMakeRange(range1.location + range1.length, range2.location - range1.location - range1.length);
             NSString *sub = [location substringWithRange:rSub];
             
+            detailRestaurant.locationString = sub;
+            
+            NSString *locationCoord = [_locationRestaurant text];
+            range1 = [locationCoord rangeOfString:@"<"];
+            range2 = [locationCoord rangeOfString:@">"];
+            rSub = NSMakeRange(range1.location + range1.length, range2.location - range1.location - range1.length);
+            sub = [locationCoord substringWithRange:rSub];
+            
             detailRestaurant.location = sub;
+            
             detailRestaurant.type = self.typeRestaurant.text;
             detailRestaurant.category = self.categoryRestaurant.text;
             
@@ -178,6 +198,7 @@
     
 }
 
+//fill all the fields with the info provided (edit mode)
 - (void)fillInfo {
     self.nameRestaurant.text = detailRestaurant.name;
     self.categoryRestaurant.text = detailRestaurant.category;
@@ -192,7 +213,8 @@
     self.priceRestaurant.text = [NSString stringWithFormat:@"%.02f", [detailRestaurant.price doubleValue]];
     self.ratingLabel.text = [detailRestaurant.rating stringValue];
     self.ratingRestaurant.value = [detailRestaurant.rating floatValue];
-    [self.locationButton setTitle:[NSString stringWithFormat:@"Location: <%@>", detailRestaurant.location] forState:UIControlStateNormal];
+    [self.locationButton setTitle:[NSString stringWithFormat:@"Location: <%@>", detailRestaurant.locationString] forState:UIControlStateNormal];
+    self.locationRestaurant.text = [NSString stringWithFormat:@"Location: <%@>", detailRestaurant.location];
     self.imageRestaurant.image = [UIImage loadImageWithName:detailRestaurant.image];
     
 }
@@ -229,7 +251,8 @@
     NSDictionary *userInfo = [notification userInfo];
     
     //set the text of the button
-    [_locationButton setTitle:[NSString stringWithFormat:@"Location: <%f,%f>", [[userInfo objectForKey:kUserInfoCoordinateLatNotification] doubleValue], [[userInfo objectForKey:kUserInfoCoordinateLonNotification] doubleValue]] forState:UIControlStateNormal];
+    [_locationRestaurant setText:[NSString stringWithFormat:@"Location: <%f,%f>", [[userInfo objectForKey:kUserInfoCoordinateLatNotification] doubleValue], [[userInfo objectForKey:kUserInfoCoordinateLonNotification] doubleValue]]];
+    [_locationButton setTitle:[NSString stringWithFormat:@"Location: <%@>", [userInfo objectForKey:kUserInfoCoordinateTextNotification]] forState:UIControlStateNormal];
 }
 
 
@@ -239,8 +262,9 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
-    NSString *location = [_locationButton titleForState:UIControlStateNormal];
+    NSString *location = [_locationRestaurant text];
     
+    //if the button's text is equal to location, meaning there is no location, don't set the CoordString from the LocationViewController
     if (![location isEqualToString:@"Location"]) {
         
     

@@ -13,6 +13,7 @@
 		5D71E2821DA2CB310052BDFF /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D71E2811DA2CB310052BDFF /* Constants.m */; };
 		5D71E2841DA2E9390052BDFF /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D71E2831DA2E9390052BDFF /* placeholder.png */; };
 		5D71E2881DA341230052BDFF /* UIImage+Save.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D71E2871DA341230052BDFF /* UIImage+Save.m */; };
+		5D71E28B1DA39DAE0052BDFF /* FilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D71E28A1DA39DAE0052BDFF /* FilterViewController.m */; };
 		5DFEF4581D9CA4B6009778BB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DFEF4571D9CA4B6009778BB /* main.m */; };
 		5DFEF45B1D9CA4B6009778BB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DFEF45A1D9CA4B6009778BB /* AppDelegate.m */; };
 		5DFEF4611D9CA4B6009778BB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5DFEF45F1D9CA4B6009778BB /* Main.storyboard */; };
@@ -38,6 +39,8 @@
 		5D71E2831DA2E9390052BDFF /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = "<group>"; };
 		5D71E2861DA341230052BDFF /* UIImage+Save.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Save.h"; sourceTree = "<group>"; };
 		5D71E2871DA341230052BDFF /* UIImage+Save.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Save.m"; sourceTree = "<group>"; };
+		5D71E2891DA39DAE0052BDFF /* FilterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterViewController.h; sourceTree = "<group>"; };
+		5D71E28A1DA39DAE0052BDFF /* FilterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterViewController.m; sourceTree = "<group>"; };
 		5DFEF4531D9CA4B5009778BB /* RistorantApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RistorantApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DFEF4571D9CA4B6009778BB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		5DFEF4591D9CA4B6009778BB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -160,6 +163,8 @@
 				5DFEF4921DA263F6009778BB /* RestaurantDetailViewController.m */,
 				5D71E2781DA2AE910052BDFF /* LocationViewController.h */,
 				5D71E2791DA2AE910052BDFF /* LocationViewController.m */,
+				5D71E2891DA39DAE0052BDFF /* FilterViewController.h */,
+				5D71E28A1DA39DAE0052BDFF /* FilterViewController.m */,
 			);
 			name = controllers;
 			sourceTree = "<group>";
@@ -265,6 +270,7 @@
 				5D71E2881DA341230052BDFF /* UIImage+Save.m in Sources */,
 				5DFEF4791DA16834009778BB /* CoreDataStorage.m in Sources */,
 				5DFEF45B1D9CA4B6009778BB /* AppDelegate.m in Sources */,
+				5D71E28B1DA39DAE0052BDFF /* FilterViewController.m in Sources */,
 				5DFEF4581D9CA4B6009778BB /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

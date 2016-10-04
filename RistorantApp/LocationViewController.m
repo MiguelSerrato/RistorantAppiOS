@@ -67,12 +67,33 @@
         
         dropPin.coordinate = CLLocationCoordinate2DMake(locCoord.latitude, locCoord.longitude);
         
+        CLGeocoder *ceo = [[CLGeocoder alloc]init];
+        CLLocation *loc = [[CLLocation alloc]initWithLatitude:locCoord.latitude longitude:locCoord.longitude]; //insert your coordinates
+        __block NSString *locatedAt = @"";
+        [ceo reverseGeocodeLocation:loc
+                  completionHandler:^(NSArray *placemarks, NSError *error) {
+                      CLPlacemark *placemark = [placemarks objectAtIndex:0];
+                      if (placemark) {
+                          locatedAt = [[placemark.addressDictionary valueForKey:@"FormattedAddressLines"] componentsJoinedByString:@", "];
+                      }
+                      else {
+                          locatedAt = @"Could not locate";
+                      }
+                      //post notification with the info of the coordinate
+                      NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+                      
+                      [notificationCenter postNotificationName:kCoordinateNotification
+                                                        object:self
+                                                      userInfo:
+                       @{kUserInfoCoordinateLatNotification : [NSNumber numberWithDouble:dropPin.coordinate.latitude],
+                         kUserInfoCoordinateLonNotification : [NSNumber numberWithDouble:dropPin.coordinate.longitude],
+                         kUserInfoCoordinateTextNotification : locatedAt}];
+                  }
+         ];
+        
         [self.mapView addAnnotation:dropPin];
         
-        //post notification with the info of the coordinate
-        NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
         
-        [notificationCenter postNotificationName:kCoordinateNotification object:self userInfo:@{kUserInfoCoordinateLatNotification : [NSNumber numberWithDouble:dropPin.coordinate.latitude], kUserInfoCoordinateLonNotification : [NSNumber numberWithDouble:dropPin.coordinate.longitude]}];
         
     }
 }

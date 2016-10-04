@@ -11,7 +11,12 @@
 @interface Constants : NSObject
 //notifications
 extern NSString * const kCoordinateNotification;
+extern NSString * const kFilterNotification;
+extern NSString * const kFilterResetNotification;
 //notification user info
 extern NSString * const kUserInfoCoordinateLatNotification;
 extern NSString * const kUserInfoCoordinateLonNotification;
+extern NSString * const kUserInfoCoordinateTextNotification;
+extern NSString * const kUserInfoPredicatesNotification;
+extern NSString * const kUserInfoSortersNotification;
 @end

@@ -11,6 +11,8 @@
 #import "Restaurant.h"
 #import "RestaurantDetailViewController.h"
 #import "CoreDataStorage.h"
+#import "FilterViewController.h"
+#import "Constants.h"
 
 @interface RestaurantTableViewController ()
 
@@ -28,6 +30,7 @@
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
+    //perform the fetch at the begin
     managedObjectContext = [[CoreDataStorage sharedInstance] managedObjectContext];
     NSError *error;
     if (![[self fetchedResultsController] performFetch:&error]) {
@@ -38,6 +41,7 @@
     
     self.title = @"Restaurants";
     
+    //add buttons to the navigation bar
     UIBarButtonItem *btnFilter = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(filterRestaurant)];
     UIBarButtonItem *btnAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addRestaurant)];
     [self.navigationItem setRightBarButtonItems:@[btnFilter, self.editButtonItem]];
@@ -46,12 +50,20 @@
 
 //go to the filter view
 - (void)filterRestaurant {
-    
+    FilterViewController *filterView = [self.storyboard instantiateViewControllerWithIdentifier:@"filterview"];
+    [filterView setFetchedResultsController:_fetchedResultsController];
+    //add navigation controller
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:filterView];
+    [navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+    [navigationController.navigationBar setBarTintColor:[UIColor blackColor]];
+    [navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor redColor]}];
+    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 
 //go to the add new restaurant view
 - (void)addRestaurant {
     RestaurantDetailViewController *newRestaurant = [self.storyboard instantiateViewControllerWithIdentifier:@"restaurantdetailview"];
+    //add navigation controller
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newRestaurant];
     [navigationController.navigationBar setTintColor:[UIColor whiteColor]];
     [navigationController.navigationBar setBarTintColor:[UIColor blackColor]];
@@ -59,9 +71,53 @@
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    //add notification for the filter
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter addObserver:self
+                           selector:@selector(filterNotification:)
+                               name:kFilterNotification
+                             object:nil];
+    
+}
+
+
+- (void)filterNotification:(NSNotification *)notification {
+    //get userinfo dictionary
+    NSDictionary *userInfo = [notification userInfo];
+    //erase cache
+    [NSFetchedResultsController deleteCacheWithName:@"Root"];
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription
+                                   entityForName:@"Restaurant" inManagedObjectContext:managedObjectContext];
+    [fetchRequest setEntity:entity];
+    
+    [fetchRequest setPredicate:(NSPredicate *)[userInfo objectForKey:kUserInfoPredicatesNotification]];
+    [fetchRequest setSortDescriptors:(NSArray *)[userInfo objectForKey:kUserInfoSortersNotification]];
+    [fetchRequest setFetchBatchSize:20];
+    NSFetchedResultsController *theFetchedResultsController =
+    [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                        managedObjectContext:managedObjectContext
+                                          sectionNameKeyPath:nil
+                                                   cacheName:@"Root"];
+    self.fetchedResultsController = theFetchedResultsController;
+    _fetchedResultsController.delegate = self;
+    
+    NSError *error;
+    if (![_fetchedResultsController performFetch:&error]) {
+        // Update to handle the error appropriately.
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        exit(-1);  // Fail
+    }
+    [self.tableView reloadData];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter removeObserver:self];
 }
 
 #pragma mark - Table view data source
@@ -87,6 +143,7 @@
     
     Restaurant *info = [_fetchedResultsController objectAtIndexPath:indexPath];
     
+    //fill the cell with the restaurant info
     [cell setInfoWithRestaurant:info];
     
     return cell;
@@ -122,7 +179,7 @@
     // Navigation logic may go here. Create and push another view controller.
     
      RestaurantDetailViewController *detailRestaurant = [self.storyboard instantiateViewControllerWithIdentifier:@"restaurantdetailview"];
-    
+    //send the detail object
     detailRestaurant.detailRestaurant = [_fetchedResultsController objectAtIndexPath:indexPath];
      // ...
      // Pass the selected object to the new view controller.
@@ -147,6 +204,8 @@
     if (_fetchedResultsController != nil) {
         return _fetchedResultsController;
     }
+    
+    [NSFetchedResultsController deleteCacheWithName:@"Root"];
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription

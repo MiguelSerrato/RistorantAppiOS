@@ -11,7 +11,12 @@
 @implementation Constants
 //notifications
 NSString * const kCoordinateNotification = @"kCoordinateNotification";
+NSString * const kFilterNotification = @"kFilterNotification";
+NSString * const kFilterResetNotification = @"kFilterResetNotification";
 
 NSString * const kUserInfoCoordinateLatNotification = @"kUserInfoCoordinateLatNotification";
 NSString * const kUserInfoCoordinateLonNotification = @"kUserInfoCoordinateLonNotification";
+NSString * const kUserInfoCoordinateTextNotification = @"kUserInfoCoordinateTextNotification";
+NSString * const kUserInfoPredicatesNotification = @"kUserInfoPredicatesNotification";
+NSString * const kUserInfoSortersNotification = @"kUserInfoSortersNotification";
 @end

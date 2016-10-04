@@ -29,7 +29,6 @@
                                                          NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     NSString* path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", name]];
-    NSLog(@"path image: %@", path);
     UIImage* image = [UIImage imageWithContentsOfFile:path];
     return image;
 }
